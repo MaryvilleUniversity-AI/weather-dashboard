@@ -54,3 +54,6 @@ weather-dashboard/
 * Auto-suggest for city names
 * Improved mobile layout
 * More polished UI
+
+## License
+This project is for educational purposes and is free to use or modify.
