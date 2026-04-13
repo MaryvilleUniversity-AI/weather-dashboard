@@ -1,31 +1,128 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Weather Dashboard</title>
+    <title>Skyline Weather Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Newsreader:opsz,wght@6..72,500;6..72,700&display=swap"
+      rel="stylesheet"
+    />
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='style.css') }}"
     />
+    <script src="{{ url_for('static', filename='app.js') }}" defer></script>
   </head>
   <body>
-    <div class="container">
-      <h1>Weather Dashboard</h1>
-      <form method="POST">
-        <input type="text" name="city" placeholder="Enter city name" required />
-        <button type="submit">Search</button>
-      </form>
+    <div class="sky-layer sky-layer-1" aria-hidden="true"></div>
+    <div class="sky-layer sky-layer-2" aria-hidden="true"></div>
 
-      {% if weather %}
-      <div id="weatherInfo">
-        <h2>{{ weather.city }}</h2>
-        <p>Temperature: {{ weather.temp_c }} °C / {{ weather.temp_f }} °F</p>
-        <p>Weather: {{ weather.desc }}</p>
-        <p>Humidity: {{ weather.humidity }}%</p>
-        <p>Wind: {{ weather.wind }} m/s</p>
-      </div>
-      {% endif %}
-    </div>
+    <main class="dashboard-shell">
+      <section class="search-panel glass-card">
+        <p class="eyebrow">Realtime Conditions</p>
+        <h1>Skyline Forecast</h1>
+        <p class="subhead">
+          Look up current weather for any city and get a clean snapshot in one
+          place.
+        </p>
+
+        <form
+          id="weatherForm"
+          method="POST"
+          class="search-form"
+          aria-describedby="formStatus"
+        >
+          <label class="sr-only" for="cityInput">City name</label>
+          <input
+            id="cityInput"
+            type="text"
+            name="city"
+            placeholder="Search city..."
+            required
+            autocomplete="off"
+          />
+          <button id="searchBtn" type="submit">Search</button>
+        </form>
+
+        <p id="formStatus" class="form-status" aria-live="polite"></p>
+
+        {% if recent_searches %}
+        <div class="recent-searches" aria-label="Recent searches">
+          <p>Recent</p>
+          <div class="chip-row">
+            {% for city in recent_searches %}
+            <form method="POST" class="chip-form">
+              <input type="hidden" name="city" value="{{ city }}" />
+              <button type="submit" class="chip">{{ city }}</button>
+            </form>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+      </section>
+
+      <section class="results-panel">
+        <article
+          id="loadingCard"
+          class="glass-card state-card loading-card"
+          hidden
+        >
+          <p class="state-title">Checking the skies...</p>
+          <p>Please wait while we fetch the latest weather data.</p>
+        </article>
+
+        {% if error %}
+        <article class="glass-card state-card error-card" role="alert">
+          <p class="state-title">Unable to load weather</p>
+          <p>{{ error }}</p>
+        </article>
+        {% elif weather %}
+        <article class="glass-card weather-card" id="weatherInfo">
+          <header class="weather-header">
+            <div>
+              <p class="eyebrow">Current Weather</p>
+              <h2>{{ weather.city }}</h2>
+            </div>
+            {% if weather.icon_url %}
+            <img
+              src="{{ weather.icon_url }}"
+              alt="{{ weather.desc }} icon"
+              class="weather-icon"
+            />
+            {% endif %}
+          </header>
+
+          <div class="temperature-row">
+            <p class="temperature">{{ weather.temp_c }}<span>°C</span></p>
+            <p class="alt-temp">{{ weather.temp_f }}°F</p>
+          </div>
+
+          <div class="chip-row conditions">
+            <span class="chip static-chip">{{ weather.condition }}</span>
+            <span class="chip static-chip">{{ weather.desc }}</span>
+          </div>
+
+          <div class="metrics-grid">
+            <div class="metric">
+              <p class="metric-label">Humidity</p>
+              <p class="metric-value">{{ weather.humidity }}%</p>
+            </div>
+            <div class="metric">
+              <p class="metric-label">Wind</p>
+              <p class="metric-value">{{ weather.wind }} m/s</p>
+            </div>
+          </div>
+        </article>
+        {% else %}
+        <article class="glass-card state-card empty-card">
+          <p class="state-title">Your forecast appears here</p>
+          <p>Search for a city to view live weather details.</p>
+        </article>
+        {% endif %}
+      </section>
+    </main>
   </body>
 </html>
