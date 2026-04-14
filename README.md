@@ -1,81 +1,101 @@
 # Weather Dashboard
 
-Interactive weather dashboard with a React frontend and Flask backend API, powered by OpenWeatherMap.
+Interactive weather dashboard with a Flask backend and a modern React frontend (Figma-inspired UI), powered by the OpenWeatherMap API.
 
 ## Architecture
 
-- Frontend: React + TypeScript + Vite in [frontend](frontend)
-- Backend: Flask API in [app.py](app.py)
-- Weather endpoint used by React: GET /api/weather?city=CityName
+- Backend: Flask app in [`app.py`](app.py)
+- Frontend: React + TypeScript + Vite + Tailwind CSS v4 in [`frontend`](frontend)
+- Frontend weather request: `GET /api/weather?city=CityName`
+- Vite dev proxy forwards `/api` to Flask at `http://127.0.0.1:5000`
 
-## Features
+## App Features
 
-- Search weather by city name
-- Dynamic weather-themed background and animated UI
-- Temperature, feels-like, humidity, and wind speed display
-- Error handling for invalid cities, missing API key, and network failures
+- Search real-time weather by city name using OpenWeatherMap
+- Animated glassmorphism weather card UI
+- Dynamic weather backgrounds (clear/cloudy/rainy/snowy/stormy)
+- Day/night scene behavior driven by API sunrise/sunset times
+- Weather details: temperature, feels-like, humidity, wind speed, condition, and description
+- Robust error handling for invalid city names, missing API key, and network issues
 
-## Environment Variable
+## Prerequisites
 
-Create a .env file in the project root with:
+- Python 3.10+ (recommended)
+- Node.js 18+ (recommended)
+- npm
+
+## Environment Setup
+
+Create a `.env` file in the project root:
 
 ```ini
 OPENWEATHER_API_KEY=YOUR_API_KEY_HERE
 ```
 
-## Setup
+## Installation
 
-1. Install Python dependencies
+Install backend dependencies (from repo root):
 
 ```bash
 pip install -r requirements.txt
 ```
 
-2. Install frontend dependencies
+Install frontend dependencies:
 
 ```bash
-cd frontend
-npm install
+npm --prefix frontend install
 ```
 
-## Run in Development (split mode)
+## Run the App (Development)
 
-Start Flask API in terminal 1:
+Use two terminals from the repo root.
+
+Terminal 1: start Flask API server
 
 ```bash
 python app.py
 ```
 
-Start React frontend in terminal 2:
+Terminal 2: start React frontend
 
 ```bash
 npm run frontend:dev
 ```
 
-Open:
+Then open:
 
 ```text
 http://127.0.0.1:5173
 ```
 
-The React dev server proxies /api requests to Flask at http://127.0.0.1:5000.
+## Build Frontend for Production
 
-## Optional Legacy View
+From repo root:
 
-The original Flask-rendered page still exists at:
+```bash
+npm run frontend:build
+```
+
+Preview the production frontend build locally:
+
+```bash
+npm run frontend:preview
+```
+
+## Optional Legacy Flask View
+
+The original Flask-rendered template is still available at:
 
 ```text
 http://127.0.0.1:5000
 ```
 
-## Useful Scripts
+## Useful Scripts (Repo Root)
 
-From repo root:
-
-- npm run frontend:dev
-- npm run frontend:build
-- npm run frontend:preview
+- `npm run frontend:dev` - start Vite dev server
+- `npm run frontend:build` - type-check and build frontend
+- `npm run frontend:preview` - preview built frontend
 
 ## License
 
-This project is for educational purposes and is free to use or modify.
+This project is for educational purposes and free to use or modify.

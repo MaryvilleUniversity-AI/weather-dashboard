@@ -4,8 +4,7 @@ import { Search } from 'lucide-react'
 import { WeatherBackground } from './components/WeatherBackground'
 import { WeatherCard, type WeatherData } from './components/WeatherCard'
 
-const defaultHint =
-  'Try searching for: New York, London, Tokyo, Moscow, Miami, Paris, Sydney, Dubai, Reykjavik, or Singapore'
+const defaultHint = 'Try searching for any city name (e.g. New York, London, Tokyo).'
 
 function App() {
   const [cityInput, setCityInput] = useState('')
@@ -15,7 +14,11 @@ function App() {
 
   const nowUnix = Math.floor(Date.now() / 1000)
   const isDaytime = Boolean(
-    weather && typeof weather.sunrise === 'number' && typeof weather.sunset === 'number' && nowUnix >= weather.sunrise && nowUnix < weather.sunset
+    weather &&
+      typeof weather.sunrise === 'number' &&
+      typeof weather.sunset === 'number' &&
+      nowUnix >= weather.sunrise &&
+      nowUnix < weather.sunset
   )
 
   const handleSearch = async (e: FormEvent<HTMLFormElement>) => {
@@ -37,7 +40,9 @@ function App() {
 
       if (!response.ok) {
         setWeather(null)
-        setError(payload && 'error' in payload ? payload.error || 'Unable to fetch weather right now.' : 'Unable to fetch weather right now.')
+        setError(
+          payload && 'error' in payload ? payload.error || 'Unable to fetch weather right now.' : 'Unable to fetch weather right now.'
+        )
         return
       }
 

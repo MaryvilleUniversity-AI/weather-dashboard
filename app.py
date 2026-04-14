@@ -68,7 +68,7 @@ def fetch_weather_for_city(city: str):
         sys_data = payload.get("sys", {})
         condition_id = int(weather_data.get("id", 0))
         description = weather_data.get("description", "N/A").title()
-        weather_type = classify_weather(condition_id, weather_data.get("main", description))
+        weather_type = classify_weather(condition_id, description)
         icon_code = weather_data.get("icon")
         temp_c = round(main_data.get("temp", 0), 1)
         feels_like_c = round(main_data.get("feels_like", temp_c), 1)
