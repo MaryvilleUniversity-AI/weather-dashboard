@@ -1,31 +1,173 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Weather Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='style.css') }}"
     />
+    <script src="{{ url_for('static', filename='app.js') }}" defer></script>
   </head>
-  <body>
-    <div class="container">
-      <h1>Weather Dashboard</h1>
-      <form method="POST">
-        <input type="text" name="city" placeholder="Enter city name" required />
-        <button type="submit">Search</button>
-      </form>
-
-      {% if weather %}
-      <div id="weatherInfo">
-        <h2>{{ weather.city }}</h2>
-        <p>Temperature: {{ weather.temp_c }} °C / {{ weather.temp_f }} °F</p>
-        <p>Weather: {{ weather.desc }}</p>
-        <p>Humidity: {{ weather.humidity }}%</p>
-        <p>Wind: {{ weather.wind }} m/s</p>
-      </div>
+  <body class="theme-{{ weather_type }}">
+    <div class="weather-scene" aria-hidden="true">
+      <div class="weather-scene__backdrop"></div>
+      <div class="weather-scene__orb weather-scene__orb--left"></div>
+      <div class="weather-scene__orb weather-scene__orb--right"></div>
+      {% if weather_type == 'sunny' %}
+      <div class="weather-scene__sun"></div>
+      {% endif %} {% if weather_type == 'cloudy' %}
+      <div class="weather-scene__cloud weather-scene__cloud--one"></div>
+      <div class="weather-scene__cloud weather-scene__cloud--two"></div>
+      {% endif %} {% if weather_type == 'rainy' %}
+      <div class="weather-scene__rain"></div>
+      {% endif %} {% if weather_type == 'snowy' %}
+      <div class="weather-scene__snow"></div>
+      {% endif %} {% if weather_type == 'stormy' %}
+      <div class="weather-scene__lightning"></div>
       {% endif %}
     </div>
+
+    <main class="page-shell">
+      <section class="hero">
+        <p class="hero__eyebrow">Weather Dashboard</p>
+        <h1>Discover the atmosphere of any city</h1>
+        <p class="hero__copy">
+          Search live weather conditions powered by OpenWeatherMap.
+        </p>
+      </section>
+
+      <section class="search-card glass-card">
+        <form
+          id="weatherForm"
+          method="POST"
+          class="search-form"
+          aria-describedby="formStatus"
+        >
+          <label class="sr-only" for="cityInput">City name</label>
+          <div class="search-form__field">
+            <input
+              id="cityInput"
+              type="text"
+              name="city"
+              placeholder="Enter city name..."
+              required
+              autocomplete="off"
+            />
+            <button id="searchBtn" type="submit" aria-label="Search weather">
+              <span class="search-icon" aria-hidden="true">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <circle cx="11" cy="11" r="7"></circle>
+                  <path d="M20 20l-3.5-3.5"></path>
+                </svg>
+              </span>
+              Search
+            </button>
+          </div>
+        </form>
+
+        <p id="formStatus" class="form-status" aria-live="polite">
+          {% if error %}{{ error }}{% elif weather %}Showing live weather for {{
+          weather.city }}.{% else %}Try searching for: New York, London, Tokyo,
+          Moscow, Miami, Paris, Sydney, Dubai, Reykjavik, or Singapore.{% endif
+          %}
+        </p>
+      </section>
+
+      <section class="weather-stage">
+        {% if error %}
+        <article
+          class="weather-card weather-card--error glass-card"
+          role="alert"
+        >
+          <div class="weather-card__header">
+            <div>
+              <p class="weather-card__eyebrow">Unable to load weather</p>
+              <h2>Try another city</h2>
+            </div>
+          </div>
+          <p class="weather-card__description">{{ error }}</p>
+        </article>
+        {% elif weather %}
+        <article
+          class="weather-card weather-card--{{ weather.weather_type }} glass-card"
+          id="weatherInfo"
+        >
+          <header class="weather-card__header">
+            <div>
+              <p class="weather-card__eyebrow">Current Weather</p>
+              <h2>{{ weather.city }}</h2>
+              <p class="weather-card__country">{{ weather.country }}</p>
+            </div>
+            {% if weather.icon_url %}
+            <img
+              src="{{ weather.icon_url }}"
+              alt="{{ weather.description }} icon"
+              class="weather-card__icon"
+            />
+            {% endif %}
+          </header>
+
+          <div class="weather-card__temperature-row">
+            <div class="weather-card__temperature">
+              <span>{{ weather.temperature|round(0)|int }}</span>
+              <small>°C</small>
+            </div>
+            <div class="weather-card__secondary-temp">
+              <p>{{ weather.temperature_f|round(0)|int }}°F</p>
+              <p>
+                Feels like {{ weather.feels_like|round(0)|int }}°C / {{
+                weather.feels_like_f|round(0)|int }}°F
+              </p>
+            </div>
+          </div>
+
+          <div class="weather-card__chips">
+            <span class="weather-chip">{{ weather.condition }}</span>
+            <span class="weather-chip">{{ weather.description }}</span>
+          </div>
+
+          <p class="weather-card__summary">{{ weather.description }}</p>
+
+          <div class="weather-card__metrics">
+            <div class="metric">
+              <p class="metric__label">Humidity</p>
+              <p class="metric__value">{{ weather.humidity }}%</p>
+            </div>
+            <div class="metric">
+              <p class="metric__label">Wind</p>
+              <p class="metric__value">{{ weather.wind_speed }} km/h</p>
+            </div>
+          </div>
+        </article>
+        {% else %}
+        <article class="weather-card weather-card--empty glass-card">
+          <div class="weather-card__header">
+            <div>
+              <p class="weather-card__eyebrow">Weather preview</p>
+              <h2>Your forecast appears here</h2>
+            </div>
+          </div>
+          <p class="weather-card__description">
+            Search for a city to load the live OpenWeatherMap response.
+          </p>
+        </article>
+        {% endif %}
+      </section>
+    </main>
   </body>
 </html>

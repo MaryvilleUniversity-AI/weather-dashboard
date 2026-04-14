@@ -2,11 +2,38 @@
 __pycache__/
 *.pyc
 
+# Python virtual environments
+.venv/
+venv/
+env/
+
+# Python tooling caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Python build outputs
+build/
+dist/
+*.egg-info/
+
 # Environment variables
 .env
 
 # Flask instance folder
 instance/
+
+# Frontend dependencies/build outputs
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Local design/prototype assets
+design-handoff/
 
 # Editor settings
 .vscode/
