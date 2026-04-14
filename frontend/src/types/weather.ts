@@ -6,7 +6,9 @@ export interface WeatherData {
   sunrise?: number
   sunset?: number
   temperature: number
+  temperatureF: number
   feelsLike: number
+  feelsLikeF: number
   condition: string
   weatherType: WeatherType
   humidity: number

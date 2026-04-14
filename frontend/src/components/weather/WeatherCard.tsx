@@ -7,6 +7,11 @@ interface WeatherCardProps {
 }
 
 export function WeatherCard({ weather }: WeatherCardProps) {
+  const temperatureF = Math.round(weather.temperatureF)
+  const temperatureC = Math.round(weather.temperature)
+  const feelsLikeF = Math.round(weather.feelsLikeF)
+  const feelsLikeC = Math.round(weather.feelsLike)
+
   const getWeatherIcon = () => {
     const iconProps = { className: 'w-24 h-24', strokeWidth: 1.5 }
 
@@ -57,10 +62,13 @@ export function WeatherCard({ weather }: WeatherCardProps) {
             transition={{ delay: 0.4 }}
           >
             <div className="text-white" style={{ fontSize: '5rem', lineHeight: '1', fontWeight: '300' }}>
-              {Math.round(weather.temperature)}°
+              {temperatureF}°F
             </div>
+            <p className="text-white/60 mt-1" style={{ fontSize: '0.95rem' }}>
+              {temperatureC}°C
+            </p>
             <p className="text-white/70 mt-2" style={{ fontSize: '1rem' }}>
-              Feels like {Math.round(weather.feelsLike)}°
+              Feels like {feelsLikeF}°F ({feelsLikeC}°C)
             </p>
           </motion.div>
 
