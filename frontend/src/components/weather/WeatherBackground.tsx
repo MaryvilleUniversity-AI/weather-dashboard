@@ -1,8 +1,9 @@
 import { motion } from 'motion/react'
 import { useEffect, useMemo, useState } from 'react'
+import type { WeatherType } from '../../types/weather'
 
 interface WeatherBackgroundProps {
-  weatherType: 'sunny' | 'cloudy' | 'rainy' | 'snowy' | 'stormy' | 'clear'
+  weatherType: WeatherType
   isDaytime?: boolean
 }
 

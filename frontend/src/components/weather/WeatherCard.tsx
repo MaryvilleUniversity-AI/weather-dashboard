@@ -1,54 +1,41 @@
-import { Cloud, CloudRain, CloudSnow, CloudLightning, Sun } from "lucide-react";
-import { motion } from "motion/react";
-
-interface WeatherData {
-  city: string;
-  country: string;
-  temperature: number;
-  feelsLike: number;
-  condition: string;
-  weatherType: 'sunny' | 'cloudy' | 'rainy' | 'snowy' | 'stormy' | 'clear';
-  humidity: number;
-  windSpeed: number;
-  description: string;
-}
+import { Cloud, CloudLightning, CloudRain, CloudSnow, Sun } from 'lucide-react'
+import { motion } from 'motion/react'
+import type { WeatherData } from '../../types/weather'
 
 interface WeatherCardProps {
-  weather: WeatherData;
+  weather: WeatherData
 }
 
 export function WeatherCard({ weather }: WeatherCardProps) {
   const getWeatherIcon = () => {
-    const iconProps = { className: "w-24 h-24", strokeWidth: 1.5 };
+    const iconProps = { className: 'w-24 h-24', strokeWidth: 1.5 }
 
     switch (weather.weatherType) {
       case 'sunny':
-        return <Sun {...iconProps} />;
+        return <Sun {...iconProps} />
       case 'cloudy':
-        return <Cloud {...iconProps} />;
+        return <Cloud {...iconProps} />
       case 'rainy':
-        return <CloudRain {...iconProps} />;
+        return <CloudRain {...iconProps} />
       case 'snowy':
-        return <CloudSnow {...iconProps} />;
+        return <CloudSnow {...iconProps} />
       case 'stormy':
-        return <CloudLightning {...iconProps} />;
+        return <CloudLightning {...iconProps} />
       default:
-        return <Cloud {...iconProps} />;
+        return <Cloud {...iconProps} />
     }
-  };
+  }
 
   return (
     <motion.div
       className="relative backdrop-blur-xl bg-white/10 border border-white/20 rounded-3xl p-10 shadow-2xl max-w-md w-full"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, ease: "easeOut" }}
+      transition={{ duration: 0.8, ease: 'easeOut' }}
     >
-      {/* Glass reflection effect */}
       <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-white/20 to-transparent pointer-events-none" />
 
       <div className="relative z-10">
-        {/* Location */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -63,7 +50,6 @@ export function WeatherCard({ weather }: WeatherCardProps) {
           </p>
         </motion.div>
 
-        {/* Temperature & Icon */}
         <div className="flex items-start justify-between mb-8">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -88,7 +74,6 @@ export function WeatherCard({ weather }: WeatherCardProps) {
           </motion.div>
         </div>
 
-        {/* Condition */}
         <motion.div
           className="mb-8 pb-8 border-b border-white/20"
           initial={{ opacity: 0 }}
@@ -103,7 +88,6 @@ export function WeatherCard({ weather }: WeatherCardProps) {
           </p>
         </motion.div>
 
-        {/* Weather details */}
         <motion.div
           className="grid grid-cols-2 gap-6"
           initial={{ opacity: 0 }}
@@ -129,5 +113,5 @@ export function WeatherCard({ weather }: WeatherCardProps) {
         </motion.div>
       </div>
     </motion.div>
-  );
+  )
 }

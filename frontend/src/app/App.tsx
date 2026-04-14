@@ -1,8 +1,10 @@
 import { type FormEvent, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { Search } from 'lucide-react'
-import { WeatherBackground } from './components/WeatherBackground'
-import { WeatherCard, type WeatherData } from './components/WeatherCard'
+import { fetchWeather } from '../services/weatherApi'
+import type { WeatherData } from '../types/weather'
+import { WeatherBackground } from '../components/weather/WeatherBackground'
+import { WeatherCard } from '../components/weather/WeatherCard'
 
 const defaultHint = 'Try searching for any city name (e.g. New York, London, Tokyo).'
 
@@ -35,22 +37,12 @@ function App() {
     setError('')
 
     try {
-      const response = await fetch(`/api/weather?city=${encodeURIComponent(city)}`)
-      const payload = (await response.json()) as WeatherData | { error?: string }
-
-      if (!response.ok) {
-        setWeather(null)
-        setError(
-          payload && 'error' in payload ? payload.error || 'Unable to fetch weather right now.' : 'Unable to fetch weather right now.'
-        )
-        return
-      }
-
-      setWeather(payload as WeatherData)
+      const nextWeather = await fetchWeather(city)
+      setWeather(nextWeather)
       setError('')
-    } catch {
+    } catch (err) {
       setWeather(null)
-      setError('Network issue while contacting the weather service. Please try again.')
+      setError(err instanceof Error ? err.message : 'Network issue while contacting the weather service. Please try again.')
     } finally {
       setLoading(false)
     }
