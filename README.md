@@ -1,59 +1,81 @@
 # Weather Dashboard
-A simple Flask-bsaed web application that displays the current weather for any city using the OpenWeatherMap API. Users can enter a city name and view temperature, a weather description, humidity, and wind speed.
+
+Interactive weather dashboard with a React frontend and Flask backend API, powered by OpenWeatherMap.
+
+## Architecture
+
+- Frontend: React + TypeScript + Vite in [frontend](frontend)
+- Backend: Flask API in [app.py](app.py)
+- Weather endpoint used by React: GET /api/weather?city=CityName
 
 ## Features
-* Search weather by city name
-* Temperature shown in both Celsius and Fahrenheit
-* Live weather data from OpenWeatherMap API
-* Clear, responsive front-end dashboard (HTML/CSS)
-* Error handling for invalid cities or API issues
 
-## Technologies Used
-* Python
-* Flask
-* HTML/CSS
-* OpenWeatherMap API
+- Search weather by city name
+- Dynamic weather-themed background and animated UI
+- Temperature, feels-like, humidity, and wind speed display
+- Error handling for invalid cities, missing API key, and network failures
 
-## Getting Started
-**1. Install Dependencies**
-``` bash
+## Environment Variable
+
+Create a .env file in the project root with:
+
+```ini
+OPENWEATHER_API_KEY=YOUR_API_KEY_HERE
+```
+
+## Setup
+
+1. Install Python dependencies
+
+```bash
 pip install -r requirements.txt
 ```
 
-**2. Run the Flask app**
-``` bash
+2. Install frontend dependencies
+
+```bash
+cd frontend
+npm install
+```
+
+## Run in Development (split mode)
+
+Start Flask API in terminal 1:
+
+```bash
 python app.py
 ```
-Then open:
-``` cpp
+
+Start React frontend in terminal 2:
+
+```bash
+npm run frontend:dev
+```
+
+Open:
+
+```text
+http://127.0.0.1:5173
+```
+
+The React dev server proxies /api requests to Flask at http://127.0.0.1:5000.
+
+## Optional Legacy View
+
+The original Flask-rendered page still exists at:
+
+```text
 http://127.0.0.1:5000
 ```
 
-## Environment Variables
-This project requires an OpenWeatherMap API key.
-Create a ```.env``` file in the project root:
-``` ini
-API_KEY=YOUR_API_KEY_HERE
-```
+## Useful Scripts
 
-## Project Structure
-``` cpp
-weather-dashboard/
-│── templates/
-│     └── index.html
-│── static/
-      └── styles.css
-│── .gitignore
-│── README.md
-│── app.py
-│── requirements.txt
-```
+From repo root:
 
-## Future Improvements
-* Add 5-day forecast support
-* Auto-suggest for city names
-* Improved mobile layout
-* More polished UI
+- npm run frontend:dev
+- npm run frontend:build
+- npm run frontend:preview
 
 ## License
+
 This project is for educational purposes and is free to use or modify.

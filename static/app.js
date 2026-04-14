@@ -3,9 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const input = document.getElementById('cityInput');
   const button = document.getElementById('searchBtn');
   const status = document.getElementById('formStatus');
-  const loadingCard = document.getElementById('loadingCard');
 
-  if (!form || !input || !button || !status || !loadingCard) {
+  if (!form || !input || !button || !status) {
     return;
   }
 
@@ -22,6 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
     status.textContent = 'Fetching latest weather...';
     button.disabled = true;
     button.textContent = 'Searching...';
-    loadingCard.hidden = false;
+    document.body.classList.add('is-loading');
   });
 });
