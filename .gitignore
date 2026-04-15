@@ -32,6 +32,17 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
+# Frontend build artifacts
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/.vite/
+frontend/*.local
+frontend/*.tsbuildinfo
+
+# Local design references
+figma-import/
+
 # Local design/prototype assets
 design-handoff/
 

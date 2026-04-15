@@ -102,7 +102,8 @@ function App() {
               onChange={(e) => setCityInput(e.target.value)}
               placeholder="Enter city name..."
               className="w-full px-6 py-4 pr-14 rounded-2xl backdrop-blur-xl bg-white/15 border border-white/30 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all shadow-xl"
-              style={{ fontSize: '1rem' }}
+              style={{ fontSize: "1rem" }}
+              disabled={loading}
             />
             <button
               type="submit"
